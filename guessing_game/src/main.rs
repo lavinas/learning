@@ -2,6 +2,7 @@ use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
 
+// main function
 fn main() {
     let secret_number = random();
     let mut win = false;
