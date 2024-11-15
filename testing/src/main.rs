@@ -1,27 +1,51 @@
 fn main() {
-    let tup = (500, 6.4, 1, 'a', true);
-    let (x, y, z, a, b) = tup;
-    println!("The value of x is: {}", x);
-    println!("The value of y is: {}", y);
-    println!("The value of z is: {}", z);
-    println!("The value of a is: {}", a);
-    println!("The value of b is: {}", b);
-    let five_hundred = tup.0;
-    let six_point_four = tup.1;
-    let one = tup.2;
-    let a = tup.3;
-    let b = tup.4;
-    println!("The value of five_hundred is: {}", five_hundred);
-    println!("The value of six_point_four is: {}", six_point_four);
-    println!("The value of one is: {}", one);
-    println!("The value of a is: {}", a);
-    println!("The value of b is: {}", b);
-    let mut arr: [i32; 5] = [1, 2, 3, 4, 5];
-    let first = arr[0];
-    let second = arr[1];
-    println!("The value of first is: {}", first);
-    println!("The value of second is: {}", second);
-    arr[0] = 6;
-    let new_first = arr[0];
-    println!("The value of new_first is: {}", new_first);
+    let s = gives_ownership();
+    println!("s: {}", s);
+    let s2 = takes_and_gives_back(s);
+    println!("s3: {}", s2);
+    let (s3, len) = calculate_length(s2);
+    println!("s3: {}, len: {}", s3, len);
+    let mut s4 = String::from("hello");
+    let len = calculate_length_ref(&mut s4);
+    println!("s4: {}, len: {}", s4, len);
+    let s5 = &s4;
+    println!("s5: {}", s5);
+    let s6 = &mut s4;
+    println!("s6: {}", s6);
+    let s7 = &s4;
+    println!("s7: {}", s7);
+    let s8 = String::from("hello world");
+    let s9= &s8[0..5];
+    println!("s9: {}", s9);
+    let (s10, s11) = s8.split_at(5);
+    println!("s10: {}, s11: {}", s10, s11);
+    let s11 = "hello world";
+    let s12 = &s11[0..5];
+    println!("s12: {}", s12);
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3];
+    println!("slice: {:?}", slice);
+    let b = (1, 2, 3, 4, "a");
+    let slice2 = &b.1..&b.3;
+    println!("slice2: {:?}", slice2);
+    
+}
+
+fn gives_ownership() -> String {
+    let s = String::from("hello");
+    s
+}
+
+fn takes_and_gives_back(s: String) -> String {
+    s
+}
+
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len();
+    (s, length)
+}
+
+fn calculate_length_ref(s: &mut String) -> usize {
+    s.push_str(" world");
+    s.len()
 }
