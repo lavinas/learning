@@ -8,18 +8,25 @@ fn main() {
         email: String::from("x@test.com"),
         sign_in_count: 1,
     };
-    println!("user1: {}, {}, {}, {}", user1.active, user1.username, user1.email, user1.sign_in_count);
+    println!(
+        "user1: {}, {}, {}, {}",
+        user1.active, user1.username, user1.email, user1.sign_in_count
+    );
     let user2 = User {
         active: user1.active,
         username: user1.username,
         email: user1.email,
         sign_in_count: user1.sign_in_count,
     };
-    println!("user2: {}, {}, {}, {}", user2.active, user2.username, user2.email, user2.sign_in_count);
-    let user3 = User {
-        ..user2
-    };
-    println!("user3: {}, {}, {}, {}", user3.active, user3.username, user3.email, user3.sign_in_count);
+    println!(
+        "user2: {}, {}, {}, {}",
+        user2.active, user2.username, user2.email, user2.sign_in_count
+    );
+    let user3 = User { ..user2 };
+    println!(
+        "user3: {}, {}, {}, {}",
+        user3.active, user3.username, user3.email, user3.sign_in_count
+    );
     let c = Color(255, 0, 0);
     let p = Point(0, 0, 0);
     println!("color: {}, {}, {}", c.0, c.1, c.2);
@@ -63,7 +70,6 @@ fn area(witdh: u32, height: u32) -> u32 {
 fn area2(dimensions: (u32, u32)) -> u32 {
     dimensions.0 * dimensions.1
 }
-
 
 // create a function called area3 that takes a reference to a struct Rectangle and returns a u32 value
 fn area3(rectangle: &Rectangle) -> u32 {
