@@ -31,7 +31,6 @@ pub fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     } else {
         search(&config.query, &contents)
     };
-
     for line in results {
         println!("{}", line);
     }
@@ -39,7 +38,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
 }
 
 // search function
-pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let mut results = Vec::new();
     for line in contents.lines() {
         if line.contains(query) {
@@ -50,7 +49,7 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 }
 
 // search_case_insensitive function
-pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let query = query.to_lowercase();
     let mut results = Vec::new();
 
