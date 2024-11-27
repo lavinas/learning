@@ -17,5 +17,3 @@ fn main() {
         process::exit(1);
     }
 }
-
-
