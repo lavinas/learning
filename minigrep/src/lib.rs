@@ -21,6 +21,19 @@ impl Config {
         let ignore_case = env::var("IGNORE_CASE").is_ok();
         Ok(Config { query, file_path, ignore_case })
     }
+    pub fn build2(args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        let mut args = args.skip(1);
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("No query string provided"),
+        };
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("No file path provided"),
+        };
+        let ignore_case = env::var("IGNORE_CASE").is_ok();
+        Ok(Config { query, file_path, ignore_case })
+    }
 }
 
 // run function
@@ -39,13 +52,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
 
 // search function
 fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.contains(query) {
-            results.push(line);
-        }
-    }
-    results
+    contents.lines().filter(|line| line.contains(query)).collect()
 }
 
 // search_case_insensitive function
