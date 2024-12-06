@@ -1,35 +1,25 @@
-use std::sync::mpsc;
+use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 
 fn main() {
-    let (tx, rx) = mpsc::channel();
-    let tx1 = tx.clone();
-    send_message(vec![
-        String::from("hi"),
-        String::from("from"),
-        String::from("the"),
-        String::from("thread"),
-    ], tx);
-    send_message(vec![
-        String::from("more"),
-        String::from("messages"),
-        String::from("for"),
-        String::from("you"),
-    ], tx1);
-    
-    for received in rx {
-        println!("Got: {received}");
-    }
-}
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
 
-fn send_message(messages: Vec<String>, tx: mpsc::Sender<String>) {
-    thread::spawn(move || {
-        for val in messages {
-            tx.send(val).unwrap();
-            thread::sleep(Duration::from_secs(1));
-        }
-    });
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+
+            *num += 1;
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+    println!("Result: {}", *counter.lock().unwrap());
 }
 
 fn _main0() {
@@ -83,4 +73,33 @@ fn _main3() {
     for received in rx {
         println!("Got: {received}");
     }
+}
+
+fn _main4() {
+    let (tx, rx) = mpsc::channel();
+    let tx1 = tx.clone();
+    _send_message(vec![
+        String::from("hi"),
+        String::from("from"),
+        String::from("the"),
+        String::from("thread"),
+    ], tx);
+    _send_message(vec![
+        String::from("more"),
+        String::from("messages"),
+        String::from("for"),
+        String::from("you"),
+    ], tx1);
+    for received in rx {
+        println!("Got: {received}");
+    }
+}
+
+fn _send_message(messages: Vec<String>, tx: mpsc::Sender<String>) {
+    thread::spawn(move || {
+        for val in messages {
+            tx.send(val).unwrap();
+            thread::sleep(Duration::from_secs(1));
+        }
+    });
 }
